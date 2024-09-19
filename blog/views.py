@@ -31,5 +31,12 @@ def post_detail(request, slug):
     return render(
         request,
         "blog/post_detail.html",
-        {"post": post},
+        {"post": post }, # This dictionary is referred to as a context
     )
+    # Another way of creating your context
+    # context = {"post": post}
+    # return render(
+    #     request,
+    #     "blog/post_detail.html",
+    #     context
+    # )

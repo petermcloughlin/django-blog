@@ -23,8 +23,13 @@ def post_detail(request, slug):
     **Context**
 
     ``post``
-        An instance of :model:`blog.Post`
-    
+        An instance of :model:`blog.Post`.
+    ``comments``    
+        All approved comments related to the post.
+    ``comment_count``
+        A count of approved comments related to the post.
+    ``comment_form``
+        An instance of :form:`blog.CommentForm`.    
     **Template:**
 
     :template:`blog/post_detail.html`
@@ -35,8 +40,7 @@ def post_detail(request, slug):
     comments = post.comments.all().order_by("-created_on")
     comment_count = post.comments.filter(approved=True).count()
 
-    if request.method == "POST":
-        print('Received a POST request')
+    if request.method == "POST":        
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -49,8 +53,6 @@ def post_detail(request, slug):
             )
 
     comment_form = CommentForm()
-
-    print('About to render the template')
 
     return render(
         request,
@@ -80,7 +82,15 @@ def profile_page(request):
 # Edit a comment
 def comment_edit(request, slug, comment_id):
     """
-    view to edit comments
+    Display an individual comment for edit.
+
+    **Context**
+    ``post``
+        An instance of :model:`blog.Post`.
+    ``comment``
+        A single comment related to the post.
+    ``comment_form``
+        An instance of :form:`blog.CommentForm`
     """
     if request.method == "POST":
 
